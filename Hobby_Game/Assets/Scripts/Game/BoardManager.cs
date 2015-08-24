@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using System.Linq;
@@ -10,6 +11,7 @@ public class BoardManager : MonoBehaviour
     public GameObject[] floorTiles;
     public GameObject[] enemies;
     public GameObject[] pickups;
+    public GameObject[] walls;
     public GameObject exit;
     public int startingLevelSize = 20;
 
@@ -22,8 +24,9 @@ public class BoardManager : MonoBehaviour
     {
         CreateBoard(BoardWidth, BoardHeight);
         InitializeList();
-
-
+        LayoutObjectAtRandom(pickups, level, (int)Math.Ceiling(level*1.5f));
+        LayoutObjectAtRandom(walls, BoardWidth*BoardHeight/5, BoardWidth*BoardHeight/3);
+        LayoutObjectAtRandom(enemies, level - 1, level);
         Instantiate(exit, RandomExitPosition(), Quaternion.identity);
 
     }
@@ -48,8 +51,7 @@ public class BoardManager : MonoBehaviour
                     toInstantiate = outerWallTiles[Random.Range(0, outerWallTiles.Length)];
                 GameObject instance = Instantiate(toInstantiate, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
 
-                instance.transform.SetParent(boardHolder);
-
+                if (instance != null) instance.transform.SetParent(boardHolder);
             }
         }
 
@@ -85,7 +87,6 @@ public class BoardManager : MonoBehaviour
 
         for (int i = 0; i < randomObjectCount; i++)
         {
-
             Vector3 randomPosition = RandomPosition();
             GameObject randomObject = tileArray[Random.Range(0, tileArray.Length)];
             Instantiate(randomObject, randomPosition, Quaternion.identity);

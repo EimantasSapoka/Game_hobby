@@ -31,10 +31,13 @@ public class GameManager : MonoBehaviour
 
 	    DontDestroyOnLoad(this.gameObject);
 	    boardManager = GetComponent<BoardManager>();
-	    boardManager.GenerateLevel(level);
-
-
 	}
+
+    private void OnLevelWasLoaded()
+    {
+        boardManager.GenerateLevel(level);
+        PlayerTurn = true;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -78,7 +81,9 @@ public class GameManager : MonoBehaviour
 
     private void LoadMenu()
     {
+        UIManager.instance.LoadUiScreen();
         Application.LoadLevel(0);
+        DestroyObject(this.gameObject);
     }
 
     public void AddEnemyToList(Enemy enemy)

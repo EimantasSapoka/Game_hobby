@@ -48,7 +48,10 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Game\BoardManager.cs" />
      <Compile Include="Assets\Scripts\Game\CameraScript.cs" />
+     <Compile Include="Assets\Scripts\Game\Enemy.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Game\MovingObject.cs" />
+     <Compile Include="Assets\Scripts\Game\Player.cs" />
      <Compile Include="Assets\Scripts\Menu\DontDestroyOnLoad.cs" />
      <Compile Include="Assets\Scripts\Menu\QuitApplication.cs" />
      <Compile Include="Assets\Scripts\Menu\SetAudioLevels.cs" />

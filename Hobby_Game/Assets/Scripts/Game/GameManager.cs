@@ -31,10 +31,12 @@ public class GameManager : MonoBehaviour
 
 	    DontDestroyOnLoad(this.gameObject);
 	    boardManager = GetComponent<BoardManager>();
+	    OnLevelWasLoaded();
 	}
 
     private void OnLevelWasLoaded()
     {
+        Debug.Log("Loading level");
         boardManager.GenerateLevel(level);
         PlayerTurn = true;
     }
@@ -46,6 +48,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 	    StartCoroutine(MoveEnemies());
+ 
 	}
 
     protected IEnumerator MoveEnemies()
@@ -55,7 +58,6 @@ public class GameManager : MonoBehaviour
 
         if (enemies.Count == 0)
         {
-            Debug.Log("Zero enemies");
             yield return new WaitForSeconds(turnDelay);
         }
 

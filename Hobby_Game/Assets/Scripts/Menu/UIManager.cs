@@ -4,13 +4,12 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {     
 
-    private readonly int START_SCENE = 1;
-    private GameObject MainMenu;
+    public GameObject GameOverPanel;
+    public GameObject FadePanel;
+    public GameObject MainMenu;
+    public GameObject GameUI;
 
     public static UIManager instance;
-
-    private Animator UIfadeAnimator;
-    private GameObject fadePanel;
 
     // Use this for initialization
 	void Awake ()
@@ -24,11 +23,7 @@ public class UIManager : MonoBehaviour {
             DestroyObject(this.gameObject);
         }
 	    DontDestroyOnLoad(this.gameObject);
-	    MainMenu = GameObject.Find("Main UI Screen");
-	    fadePanel = GameObject.Find("Fade");
-
-	    UIfadeAnimator = fadePanel.GetComponent<Animator>();
-
+	    UIfadeAnimator = FadePanel.GetComponent<Animator>();
 	}
 
     public void StartButtonOnClick()
@@ -37,17 +32,25 @@ public class UIManager : MonoBehaviour {
         UIfadeAnimator.SetTrigger("Fade");
     }
 
+    public void LoadUiScreen()
+    {
+        GameOverPanel.SetActive(false);
+        MainMenu.SetActive(true);
+    }
+
+
+    public void ShowGameOverPanel()
+    {
+        GameOverPanel.SetActive(true);
+    }
+
     private void LoadFirstLevel()
     {
         MainMenu.SetActive(false);
         Application.LoadLevel(START_SCENE);
+        GameUI.SetActive(true);
     }
 
-    public void LoadUiScreen()
-    {
-        MainMenu.SetActive(true);
-    }
-
-	
-	
+    private Animator UIfadeAnimator;
+    private readonly int START_SCENE = 1;
 }

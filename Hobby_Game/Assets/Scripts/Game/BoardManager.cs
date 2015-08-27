@@ -33,7 +33,6 @@ public class BoardManager : MonoBehaviour
 
     private Vector3 RandomExitPosition()
     {
-        Debug.Log(gridPositions[0]);
         return gridPositions.OrderBy<Vector3, int>(vector => Random.Range(0, gridPositions.Count))
                             .First(vector => (vector.x > BoardWidth/1.6f && vector.y > BoardHeight/1.6f));
     }

@@ -8,12 +8,11 @@ public class GameManager : MonoBehaviour
     public BoardManager boardManager;
 
     public bool PlayerTurn;
+    public int playerFoodPoints = 100;
 
     public int level = 1;
-    private float turnDelay = .1f;
-    public int playerFoodPoints = 100;
-    private bool enemiesMoving;
-    private List<Enemy> enemies;
+    
+    
 
     // Use this for initialization
 	void Awake ()
@@ -31,12 +30,12 @@ public class GameManager : MonoBehaviour
 
 	    DontDestroyOnLoad(this.gameObject);
 	    boardManager = GetComponent<BoardManager>();
+	    UIManager.instance.GameUI.SetActive(true);
 	    OnLevelWasLoaded();
 	}
 
     private void OnLevelWasLoaded()
     {
-        Debug.Log("Loading level");
         boardManager.GenerateLevel(level);
         PlayerTurn = true;
     }
@@ -74,22 +73,24 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-       // levelText.text = "After " + level + " days, you starved.";
-       // levelImage.SetActive(true);
+        UIManager.instance.ShowGameOverPanel();
         enabled = false;
-
         Invoke("LoadMenu", 3.0f);
-    }
-
-    private void LoadMenu()
-    {
-        UIManager.instance.LoadUiScreen();
-        Application.LoadLevel(0);
-        DestroyObject(this.gameObject);
     }
 
     public void AddEnemyToList(Enemy enemy)
     {
         enemies.Add(enemy);
     }
+
+     private void LoadMenu()
+    {
+        UIManager.instance.LoadUiScreen();
+        Application.LoadLevel(0);
+        DestroyObject(this.gameObject);
+    }
+
+    private float turnDelay = .1f;
+    private bool enemiesMoving;
+    private List<Enemy> enemies;
 }

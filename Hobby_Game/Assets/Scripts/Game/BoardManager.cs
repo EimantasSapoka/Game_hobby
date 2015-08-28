@@ -15,7 +15,7 @@ public class BoardManager : MonoBehaviour
     public GameObject exit;
     public int startingLevelSize = 20;
 
-    public int BoardWidth{ get{   return startingLevelSize + GameManager.instance.level*2; }}
+    public int BoardWidth{ get{   return startingLevelSize + GameManager.Instance.level*2; }}
     public int BoardHeight { get { return BoardWidth/2; } }
 
 

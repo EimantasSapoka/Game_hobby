@@ -16,8 +16,8 @@ public class CameraScript : MonoBehaviour
 	// Update is called once per frame
 	void LateUpdate ()
 	{
-	    float boardHeight = GameManager.instance.boardManager.BoardHeight;
-	    float boardWidth = GameManager.instance.boardManager.BoardWidth;
+	    float boardHeight = GameManager.Instance.boardManager.BoardHeight;
+	    float boardWidth = GameManager.Instance.boardManager.BoardWidth;
                 
         var vertExtent = Camera.main.orthographicSize;
         var horzExtent = vertExtent *  Screen.width / Screen.height;

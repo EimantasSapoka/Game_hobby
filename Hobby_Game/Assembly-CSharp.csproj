@@ -48,13 +48,13 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Game\BoardManager.cs" />
      <Compile Include="Assets\Scripts\Game\CameraScript.cs" />
-     <Compile Include="Assets\Scripts\Game\CheckEventSystemPresent.cs" />
      <Compile Include="Assets\Scripts\Game\Enemy.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game\Interfaces\IInteractable.cs" />
      <Compile Include="Assets\Scripts\Game\Interfaces\IWallDamage.cs" />
      <Compile Include="Assets\Scripts\Game\MovingObject.cs" />
      <Compile Include="Assets\Scripts\Game\Player.cs" />
+     <Compile Include="Assets\Scripts\Game\SingletonLoader.cs" />
      <Compile Include="Assets\Scripts\Game\Wall.cs" />
      <Compile Include="Assets\Scripts\Menu\DontDestroyOnLoad.cs" />
      <Compile Include="Assets\Scripts\Menu\QuitApplication.cs" />

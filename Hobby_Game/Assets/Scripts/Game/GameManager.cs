@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public static GameManager Instance;
     public BoardManager boardManager;
 
     public bool PlayerTurn;
@@ -17,11 +17,11 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
 	void Awake ()
 	{
-	    if (instance == null)
+	    if (Instance == null)
 	    {
-            instance = this;
+            Instance = this;
 	    }
-	    else if (instance != this)
+	    else if (Instance != this)
 	    {
 	        DestroyObject(this.gameObject);
 	    }
@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
 	    DontDestroyOnLoad(this.gameObject);
 	    boardManager = GetComponent<BoardManager>();
 	    UIManager.instance.GameUI.SetActive(true);
-	    OnLevelWasLoaded();
 	}
 
     private void OnLevelWasLoaded()

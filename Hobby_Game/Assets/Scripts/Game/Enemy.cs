@@ -45,7 +45,7 @@ public class Enemy : MovingObject, IInteractsWithPlayer {
 
     void IInteractsWithPlayer.InteractWithPlayer(Player player)
     {
-        player.LoseFood(PlayerDamage);
+        player.DamagePlayer(PlayerDamage);
         animator.SetTrigger ("Hit");
         //GameManager.MusicPlayer.RandomizeSfx(enemyAttackSound1, enemyAttackSound2);
     }

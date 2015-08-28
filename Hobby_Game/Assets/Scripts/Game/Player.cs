@@ -13,20 +13,26 @@ public class Player : MovingObject, IWallDamage, IInteractable{
 	public AudioClip GameOverSound;
 
     public Player Instance;
-
+    public int StartingFood = 100;
 	public int Damage = 1;
 	public int PointsPerFood = 10;
 	public int PointsPerSoda = 20;
 
 	public float RestartLevelDelay = 1f;
 
-	private Animator animator;
+    private int food;
+    public int Food
+    {
+        get { return food; }
+        private set
+        {
+            GameUI.Instance.UpdateFoodText(Food);
+            food = value;
+            CheckIfGameOver();
+        } 
+    }
 
-	public int Food = 100;
-
-	public Text FoodText;
-
-	// Use this for initialization
+    // Use this for initialization
 	protected override void Start () {
 	    if (Instance == null)
 	    {
@@ -38,8 +44,9 @@ public class Player : MovingObject, IWallDamage, IInteractable{
         }
 	    DontDestroyOnLoad(gameObject);
 
+	    food = StartingFood;
+
 		animator = GetComponent<Animator> ();
-	    FoodText = GameObject.Find("FoodText").GetComponent<Text>();
 		base.Start ();
 	}
 
@@ -60,8 +67,7 @@ public class Player : MovingObject, IWallDamage, IInteractable{
 
 	protected override void AttemptMove(int xDir, int yDir)
 	{
-		Food --;
-		FoodText.text = "Food: " + Food;
+	    Food --;
 		base.AttemptMove (xDir, yDir);
 		RaycastHit2D hit;
 		if (Move (xDir, yDir, out hit)) {
@@ -75,13 +81,24 @@ public class Player : MovingObject, IWallDamage, IInteractable{
 	    //
 	}
 
-	public void LoseFood(int loss)
-	{
-		animator.SetTrigger ("Player_Hit");
-		Food -= loss;
-		FoodText.text = "- " + loss + " " + FoodText.text;
-		CheckIfGameOver ();
-	}
+    public void IncreaseFood(int amount)
+    {
+        Food += amount;
+        GameUI.Instance.UpdateFoodText(Food, amount);
+    }
+
+    public void ReduceFood(int amount)
+    {
+        Food -= amount;
+        GameUI.Instance.UpdateFoodText(Food, amount*-1);
+    }
+
+    public void DamagePlayer(int damage)
+    {
+        animator.SetTrigger("Player_Hit");
+        ReduceFood(damage);
+    }
+
 
 	private void CheckIfGameOver()
 	{
@@ -117,4 +134,8 @@ public class Player : MovingObject, IWallDamage, IInteractable{
             playerInteractable.InteractWithPlayer(this);
         }
     }
+
+
+    private Animator animator;
+
 }

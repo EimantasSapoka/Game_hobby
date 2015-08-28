@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.Game.Interfaces;
 
-public class Wall : MonoBehaviour {
+public class Wall : MonoBehaviour, IInteractable {
 
 	public Sprite dmgSprite;
 	public int hp=4;
@@ -25,4 +26,15 @@ public class Wall : MonoBehaviour {
 		if (hp == 0)
 			gameObject.SetActive (false);
 	}
+
+
+    public void Interact(Component sender)
+    {
+        var damager = sender.GetComponent<IWallDamage>();
+        if (damager != null)
+        {
+            DamageWall(damager.GetWallDamage());
+        }
+
+    }
 }

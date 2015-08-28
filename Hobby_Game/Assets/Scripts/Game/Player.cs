@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.Game.Interfaces;
 using UnityEngine.UI;
 
-public class Player : MovingObject {
+public class Player : MovingObject, IWallDamage{
 
 	public AudioClip moveSound1;
 	public AudioClip moveSound2;
@@ -12,7 +13,7 @@ public class Player : MovingObject {
 	public AudioClip drinkSound2;
 	public AudioClip gameOverSound;
 
-	public int wallDamage = 1;
+	public int Damage = 1;
 	public int pointsPerFood = 10;
 	public int pointsPerSoda = 20;
 
@@ -52,14 +53,14 @@ public class Player : MovingObject {
 			vertical = 0;
 
 		if (horizontal != 0 || vertical != 0)
-			AttemptMove<Wall> (horizontal, vertical);
+			AttemptMove (horizontal, vertical);
 	}
 
-	protected override void AttemptMove<T> (int xDir, int yDir)
+	protected override void AttemptMove(int xDir, int yDir)
 	{
 		food --;
 		foodText.text = "Food: " + food;
-		base.AttemptMove<T> (xDir, yDir);
+		base.AttemptMove (xDir, yDir);
 		RaycastHit2D hit;
 		if (Move (xDir, yDir, out hit)) {
 			//GameManager.MusicPlayer.RandomizeSfx(moveSound1, moveSound2);
@@ -72,14 +73,9 @@ public class Player : MovingObject {
 	    //
 	}
 
-	protected override void OnCantMove<T>(T component)
+	protected override void OnCantMove(IInteractable component)
 	{
-		if (component is Wall) {
-			Wall hitWall = component as Wall;
-			hitWall.DamageWall (wallDamage);
-			animator.SetTrigger ("Chop");
-		}
-
+	    component.Interact(this);
 	}
 
 
@@ -98,4 +94,10 @@ public class Player : MovingObject {
 			GameManager.Instance.GameOver ();
 		}
 	}
+
+    public int GetWallDamage()
+    {
+        animator.SetTrigger("Chop");
+        return Damage;
+    }
 }

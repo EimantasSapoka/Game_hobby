@@ -36,8 +36,7 @@ public abstract class MovingObject : MonoBehaviour {
 		return false;
 	}
 
-	protected virtual void AttemptMove<T>(int xDir, int yDir)
-		where T:Component
+	protected virtual void AttemptMove(int xDir, int yDir)
 	{
 		RaycastHit2D hit;
 		bool canMove = Move (xDir, yDir, out hit);
@@ -45,11 +44,13 @@ public abstract class MovingObject : MonoBehaviour {
 		if (hit.transform == null)
 			return;
 
-		T hitComponent = hit.transform.GetComponent<T> ();
+		IInteractable hitComponent = hit.transform.GetComponent<IInteractable> ();
 
-		if (!canMove && hitComponent != null)
-			OnCantMove (hitComponent);
-	}
+	    if (!canMove && hitComponent != null)
+	    {
+	        OnCantMove(hitComponent);
+	    }
+    }
 
 	protected IEnumerator SmoothMovement(Vector3 end)
 	{
@@ -61,7 +62,6 @@ public abstract class MovingObject : MonoBehaviour {
 			yield return null;
 		}
 	}
-	
-	protected abstract void OnCantMove<T> (T component)
-		where T:Component;
+
+    protected abstract void OnCantMove(IInteractable component);
 }

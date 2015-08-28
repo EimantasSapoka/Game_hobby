@@ -23,14 +23,14 @@ public class GameManager : MonoBehaviour
 	    }
 	    else if (Instance != this)
 	    {
-	        DestroyObject(this.gameObject);
+	        DestroyObject(gameObject);
 	    }
 
 	    enemies = new List<Enemy>();
 
-	    DontDestroyOnLoad(this.gameObject);
+	    DontDestroyOnLoad(gameObject);
 	    boardManager = GetComponent<BoardManager>();
-	    UIManager.instance.GameUI.SetActive(true);
+        OnLevelWasLoaded();
 	}
 
     private void OnLevelWasLoaded()

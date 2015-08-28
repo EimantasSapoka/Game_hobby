@@ -25,7 +25,7 @@ public class SingletonLoader : MonoBehaviour {
         }
         if (!FindObjectOfType<SoundManager>())
         {
-            new SoundManager();
+            Instantiate(SoundManager);
         }
 
     }

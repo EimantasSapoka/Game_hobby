@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game\GameUI.cs" />
      <Compile Include="Assets\Scripts\Game\Interfaces\IInteractable.cs" />
+     <Compile Include="Assets\Scripts\Game\Interfaces\IInteractsWithPlayer.cs" />
      <Compile Include="Assets\Scripts\Game\Interfaces\IWallDamage.cs" />
      <Compile Include="Assets\Scripts\Game\MovingObject.cs" />
      <Compile Include="Assets\Scripts\Game\Player.cs" />
@@ -62,7 +63,6 @@
      <Compile Include="Assets\Scripts\Menu\QuitApplication.cs" />
      <Compile Include="Assets\Scripts\Menu\SetAudioLevels.cs" />
      <Compile Include="Assets\Scripts\Menu\SoundManager.cs" />
-     <Compile Include="Assets\Scripts\Menu\UIManager.cs" />
      <None Include="Assets\Fonts\OFL.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

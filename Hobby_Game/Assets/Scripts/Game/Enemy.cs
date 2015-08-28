@@ -1,12 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Assets.Scripts.Game.Interfaces;
+using UnityEngine;
 
-public class Enemy : MovingObject {
+public class Enemy : MovingObject, IInteractsWithPlayer {
 
-	public int playerDamage;
+	public int PlayerDamage;
 
-	public AudioClip enemyAttackSound1;
-	public AudioClip enemyAttackSound2;
+	public AudioClip EnemyAttackSound1;
+	public AudioClip EnemyAttackSound2;
 
 	private Animator animator;
 	private Transform target;
@@ -43,14 +43,10 @@ public class Enemy : MovingObject {
 
 	}
 
-	protected override void OnCantMove(IInteractable component)
-	{
-		if (component is Player) {
-			var hitPlayer = component as Player;
-			animator.SetTrigger ("Hit");
-			hitPlayer.LoseFood (playerDamage);
-			//GameManager.MusicPlayer.RandomizeSfx(enemyAttackSound1, enemyAttackSound2);
-		}
-	}
-
+    void IInteractsWithPlayer.InteractWithPlayer(Player player)
+    {
+        player.LoseFood(PlayerDamage);
+        animator.SetTrigger ("Hit");
+        //GameManager.MusicPlayer.RandomizeSfx(enemyAttackSound1, enemyAttackSound2);
+    }
 }

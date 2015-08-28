@@ -8,7 +8,7 @@ public class MainMenu : MonoBehaviour
     public GameObject FadePanel;
 
     // Use this for initialization
-    void Awake()
+    void Start()
     {
         UIfadeAnimator = FadePanel.GetComponent<Animator>();
         LoadFirstLevel();

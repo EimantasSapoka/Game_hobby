@@ -7,33 +7,34 @@ using System.Linq;
 public class BoardManager : MonoBehaviour
 {
 
-    public GameObject[] outerWallTiles;
-    public GameObject[] floorTiles;
-    public GameObject[] enemies;
-    public GameObject[] pickups;
-    public GameObject[] walls;
-    public GameObject exit;
-    public int startingLevelSize = 20;
+    public GameObject[] OuterWallTiles;
+    public GameObject[] FloorTiles;
+    public GameObject[] Enemies;
+    public GameObject[] Pickups;
+    public GameObject[] Walls;
+    public GameObject Exit;
+    public int StartingLevelSize = 20;
 
-    public int BoardWidth{ get{   return startingLevelSize + GameManager.Instance.level*2; }}
+    public int BoardWidth { get{   return StartingLevelSize + boardLevel*2; }}
     public int BoardHeight { get { return BoardWidth/2; } }
 
-
+    private int boardLevel;
 
     public void GenerateLevel(int level)
     {
+        boardLevel = level;
         CreateBoard(BoardWidth, BoardHeight);
         InitializeList();
-        LayoutObjectAtRandom(pickups, level, (int)Math.Ceiling(level*1.5f));
-        LayoutObjectAtRandom(walls, BoardWidth*BoardHeight/5, BoardWidth*BoardHeight/3);
-        LayoutObjectAtRandom(enemies, level - 1, level);
-        Instantiate(exit, RandomExitPosition(), Quaternion.identity);
+        LayoutObjectAtRandom(Pickups, level, (int)Math.Ceiling(level*1.5f));
+        LayoutObjectAtRandom(Walls, BoardWidth*BoardHeight/5, BoardWidth*BoardHeight/3);
+        LayoutObjectAtRandom(Enemies, level - 1, level);
+        Instantiate(Exit, RandomExitPosition(), Quaternion.identity);
 
     }
 
     private Vector3 RandomExitPosition()
     {
-        return gridPositions.OrderBy<Vector3, int>(vector => Random.Range(0, gridPositions.Count))
+        return gridPositions.OrderBy(vector => Random.Range(0, gridPositions.Count))
                             .First(vector => (vector.x > BoardWidth/1.6f && vector.y > BoardHeight/1.6f));
     }
 
@@ -45,9 +46,9 @@ public class BoardManager : MonoBehaviour
         {
             for (int y = 0; y < rows; y++)
             {
-                GameObject toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
+                GameObject toInstantiate = FloorTiles[Random.Range(0, FloorTiles.Length)];
                 if (x == 0 || x == columns-1 || y == 0 || y == rows-1)
-                    toInstantiate = outerWallTiles[Random.Range(0, outerWallTiles.Length)];
+                    toInstantiate = OuterWallTiles[Random.Range(0, OuterWallTiles.Length)];
                 GameObject instance = Instantiate(toInstantiate, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
 
                 if (instance != null) instance.transform.SetParent(boardHolder);
@@ -80,7 +81,7 @@ public class BoardManager : MonoBehaviour
     }
 
 
-    void LayoutObjectAtRandom(GameObject[] tileArray, int min, int max)
+    private void LayoutObjectAtRandom(GameObject[] tileArray, int min, int max)
     {
         int randomObjectCount = Random.Range(min, max + 1);
 

@@ -5,12 +5,9 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public BoardManager boardManager;
-
-    public bool PlayerTurn;
-    public int playerFoodPoints = 100;
-
-    public int level = 1;
+    [HideInInspector] public BoardManager BoardManager;
+    [HideInInspector] public bool PlayerTurn;
+    public int Level = 1;
     
     
 
@@ -29,14 +26,21 @@ public class GameManager : MonoBehaviour
 	    enemies = new List<Enemy>();
 
 	    DontDestroyOnLoad(gameObject);
-	    boardManager = GetComponent<BoardManager>();
-        OnLevelWasLoaded();
+	    BoardManager = GetComponent<BoardManager>();
+	    OnLevelWasLoaded(1);
 	}
 
-    private void OnLevelWasLoaded()
+    private void OnLevelWasLoaded(int levelLoaded)
     {
-        boardManager.GenerateLevel(level);
-        PlayerTurn = true;
+        if (levelLoaded == 0)
+        {
+            DestroyObject(gameObject);
+        }
+        else
+        {
+           BoardManager.GenerateLevel(Level);
+           PlayerTurn = true;  
+        }
     }
 	
 	// Update is called once per frame
@@ -62,7 +66,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < enemies.Count; i++)
         {
             enemies[i].MoveEnemy();
-            yield return new WaitForSeconds(enemies[i].moveTime);
+            yield return new WaitForSeconds(enemies[i].MoveTime);
         }
 
         PlayerTurn = true;
@@ -72,7 +76,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        UIManager.instance.ShowGameOverPanel();
+        GameUI.Instance.ShowGameOverPanel();
         enabled = false;
         Invoke("LoadMenu", 3.0f);
     }
@@ -82,11 +86,10 @@ public class GameManager : MonoBehaviour
         enemies.Add(enemy);
     }
 
-     private void LoadMenu()
+    private void LoadMenu()
     {
-        UIManager.instance.LoadUiScreen();
         Application.LoadLevel(0);
-        DestroyObject(this.gameObject);
+        DestroyObject(gameObject);
     }
 
     private float turnDelay = .1f;

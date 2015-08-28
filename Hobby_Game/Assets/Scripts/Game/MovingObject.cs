@@ -4,18 +4,18 @@ using System.Collections;
 public abstract class MovingObject : MonoBehaviour {
 
 
-	public float moveTime = .1f;
-	public LayerMask blockingLayer;
+	public float MoveTime = .1f;
+	public LayerMask BlockingLayer;
 
 	private BoxCollider2D boxCollider;
-	private Rigidbody2D rb2d;
+	private Rigidbody2D rb2D;
 	private float inverseMoveTime;
 
 	// Use this for initialization
 	protected virtual void Start () {
 		boxCollider = GetComponent<BoxCollider2D> ();
-		rb2d = GetComponent<Rigidbody2D> ();
-		inverseMoveTime = 1f / moveTime;
+		rb2D = GetComponent<Rigidbody2D> ();
+		inverseMoveTime = 1f / MoveTime;
 
 	}
 
@@ -25,7 +25,7 @@ public abstract class MovingObject : MonoBehaviour {
 		Vector2 end = start + new Vector2 (xDir, yDir);
 
 		boxCollider.enabled = false;
-		hit = Physics2D.Linecast (start, end, blockingLayer);
+		hit = Physics2D.Linecast (start, end, BlockingLayer);
 		boxCollider.enabled = true;
 
 		if (hit.transform == null) 
@@ -48,7 +48,7 @@ public abstract class MovingObject : MonoBehaviour {
 
 	    if (!canMove && hitComponent != null)
 	    {
-	        OnCantMove(hitComponent);
+	        hitComponent.Interact(this);
 	    }
     }
 
@@ -56,12 +56,11 @@ public abstract class MovingObject : MonoBehaviour {
 	{
 		float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 		while (sqrRemainingDistance > float.Epsilon) {
-			Vector3 newPosition = Vector3.MoveTowards (rb2d.position, end, inverseMoveTime * Time.deltaTime);
-			rb2d.MovePosition (newPosition);
+			Vector3 newPosition = Vector3.MoveTowards (rb2D.position, end, inverseMoveTime * Time.deltaTime);
+			rb2D.MovePosition (newPosition);
 			sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 			yield return null;
 		}
 	}
 
-    protected abstract void OnCantMove(IInteractable component);
 }

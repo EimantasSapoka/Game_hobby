@@ -1,10 +1,11 @@
 ﻿using Assets.Scripts.Game.Interfaces;
+using Assets.Scripts.Menu;
 using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
-    public class Wall : MonoBehaviour, IInteractable {
-
+    public class Wall : MonoBehaviour, IInteractable
+    {
         public Sprite DmgSprite;
         public int Hp=4;
         private SpriteRenderer spriteRenderer;
@@ -16,12 +17,11 @@ namespace Assets.Scripts.Game
         // Use this for initialization
         void Awake () {
             spriteRenderer = GetComponent<SpriteRenderer> ();
-
         }
 	
         public void DamageWall(int loss)
         {
-            //GameManager.MusicPlayer.RandomizeSfx (chopSound1, chopSound2);
+            SoundManager.Instance.PlayRandomAudioClip(ChopSound1, ChopSound2);
             spriteRenderer.sprite = DmgSprite;
             Hp -= loss;
             if (Hp == 0)

@@ -8,7 +8,10 @@ namespace Assets.Scripts.Menu
     {
 
         public static SoundManager Instance;
-        private AudioSource audioSource;
+
+        public float LowPitchRange = 0.95f;
+        public float HighPitchRange = 1.05f;
+        public bool RandomizeSoundPitch = true;
 
         public AudioClip[] SoundTracks;
 
@@ -23,35 +26,53 @@ namespace Assets.Scripts.Menu
             }
             else if (Instance != this)
             {
-                DestroyObject(this.gameObject);
+                DestroyObject(gameObject);
             }
-            DontDestroyOnLoad(this.gameObject);
+            DontDestroyOnLoad(gameObject);
 
-            audioSource = GetComponent<AudioSource>();
+            musicPlayer = GetComponents<AudioSource>()[0];
+            soundPlayer = GetComponents<AudioSource>()[1];
         }
 
         private void OnLevelWasLoaded()
         {
             var trackToPlay = SoundTracks[Random.Range(0, SoundTracks.Length)];
-            audioSource.clip = trackToPlay;
-            if (audioSource.isActiveAndEnabled)
+            musicPlayer.clip = trackToPlay;
+            if (musicPlayer.isActiveAndEnabled)
             {
-                audioSource.Play();
-                StartCoroutine(MusicFadeIn(audioSource.volume));
+                musicPlayer.Play();
+                StartCoroutine(MusicFadeIn(musicPlayer.volume));
             }
         }
 
         private IEnumerator MusicFadeIn(float originalVolume)
         {
-            audioSource.volume = 0;
+            musicPlayer.volume = 0;
             for (int i = 0; i < 5; i++)
             {
-                audioSource.volume += originalVolume*0.2f;
+                musicPlayer.volume += originalVolume*0.2f;
                 yield return new WaitForSeconds(.2f);
 
             }  
         }
 
+        public  void PlayAudioClip(AudioClip audio)
+        {
+            PlayRandomAudioClip(audio);
+        }
+
+        public  void PlayRandomAudioClip(params AudioClip[] audioClips)
+        {
+            if (RandomizeSoundPitch)
+            {
+                soundPlayer.pitch = Random.Range(LowPitchRange, HighPitchRange);
+            }
+            soundPlayer.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)]);
+        }
+
+
+        private  AudioSource musicPlayer;
+        private  AudioSource soundPlayer;
         
     }
 }

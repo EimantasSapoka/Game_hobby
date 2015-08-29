@@ -42,7 +42,6 @@ public abstract class MovingObject : MonoBehaviour {
 	{
 		RaycastHit2D hit;
 		bool canMove = Move (xDir, yDir, out hit);
-	    print("Enemy can move!");
 
 		if (hit.transform == null)
 			return;

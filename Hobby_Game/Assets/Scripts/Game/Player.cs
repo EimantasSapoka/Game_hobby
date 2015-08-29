@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
-    public class Player : MovingObject, IWallDamage, IInteractable
+    public class Player : MovingObject, IWallDamage, IInteractable, IItemConsumer
     {
 
         public static Player Instance;
@@ -28,6 +28,7 @@ namespace Assets.Scripts.Game
             get { return food; }
             private set
             {
+                print("changing food to " + value);
                 GameUI.Instance.UpdateFoodText(value);
                 food = value;
                 CheckIfGameOver();
@@ -71,7 +72,7 @@ namespace Assets.Scripts.Game
 
         protected override void AttemptMove(int xDir, int yDir)
         {
-            Food--;
+            Food = Food - 1;
             base.AttemptMove (xDir, yDir);
             RaycastHit2D hit;
             if (Move (xDir, yDir, out hit))
@@ -82,20 +83,19 @@ namespace Assets.Scripts.Game
              
             LaunchAction(OnPlayerMoveFinished);
         }
-        private void OnTriggerEnter2D (Collider2D other)
-        {
-            //
-        }
+      
 
         public void IncreaseFood(int amount)
         {
-            Food += amount;
+            print(Food+ " increasing food by " + amount);
+            Food = Food + amount;
+            print("food now is " + Food);
             LaunchAction<int>(OnPlayerFoodChanged, amount);
         }
 
         public void ReduceFood(int amount)
         {
-            Food -= amount;
+            Food =Food - amount;
             LaunchAction<int>(OnPlayerFoodChanged, amount*-1);
         }
 

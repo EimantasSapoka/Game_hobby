@@ -51,8 +51,10 @@
      <Compile Include="Assets\Scripts\Game\Enemy.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game\GameUI.cs" />
+     <Compile Include="Assets\Scripts\Game\Interfaces\IConsumable.cs" />
      <Compile Include="Assets\Scripts\Game\Interfaces\IInteractable.cs" />
      <Compile Include="Assets\Scripts\Game\Interfaces\IInteractsWithPlayer.cs" />
+     <Compile Include="Assets\Scripts\Game\Interfaces\IItemConsumer.cs" />
      <Compile Include="Assets\Scripts\Game\Interfaces\IWallDamage.cs" />
      <Compile Include="Assets\Scripts\Game\MovingObject.cs" />
      <Compile Include="Assets\Scripts\Game\PickUp.cs" />

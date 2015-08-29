@@ -28,7 +28,7 @@ namespace Assets.Scripts.Game
             CreateBoard(BoardWidth, BoardHeight);
             InitializeList();
             LayoutObjectAtRandom(Pickups, level, (int)Math.Ceiling(level*1.5f));
-            LayoutObjectAtRandom(Walls, BoardWidth*BoardHeight/5, BoardWidth*BoardHeight/3);
+            LayoutObjectAtRandom(Walls, BoardWidth*BoardHeight/4, BoardWidth*BoardHeight/3);
             LayoutObjectAtRandom(Enemies, level - 1, level);
             Instantiate(Exit, RandomExitPosition(), Quaternion.identity);
 
@@ -85,12 +85,12 @@ namespace Assets.Scripts.Game
 
         private void LayoutObjectAtRandom(GameObject[] tileArray, int min, int max)
         {
-            int randomObjectCount = Random.Range(min, max + 1);
+            var randomObjectCount = Random.Range(min, max + 1);
 
-            for (int i = 0; i < randomObjectCount; i++)
+            for (var i = 0; i < randomObjectCount; i++)
             {
-                Vector3 randomPosition = RandomPosition();
-                GameObject randomObject = tileArray[Random.Range(0, tileArray.Length)];
+                var randomPosition = RandomPosition();
+                var randomObject = tileArray[Random.Range(0, tileArray.Length)];
                 Instantiate(randomObject, randomPosition, Quaternion.identity);
             }
         }

@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public BoardManager BoardManager;
     [HideInInspector] public bool PlayerTurn;
     public int Level = 1;
-    
+
     
 
     // Use this for initialization

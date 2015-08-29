@@ -28,6 +28,7 @@ namespace Assets.Scripts.Game
 
         private void OnEnable()
         {
+            UpdateFoodText(Player.Instance.Food);
             Player.Instance.OnPlayerFoodChanged += PlayerFoodChange;
         }
 

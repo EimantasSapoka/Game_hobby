@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\Game\BoardManager.cs" />
      <Compile Include="Assets\Scripts\Game\CameraScript.cs" />
      <Compile Include="Assets\Scripts\Game\Enemy.cs" />
+     <Compile Include="Assets\Scripts\Game\Exit.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game\GameUI.cs" />
      <Compile Include="Assets\Scripts\Game\Interfaces\IConsumable.cs" />

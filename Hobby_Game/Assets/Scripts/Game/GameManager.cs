@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+           Level++;
            BoardManager.GenerateLevel(Level);
            PlayerTurn = true;  
         }
@@ -97,4 +98,17 @@ public class GameManager : MonoBehaviour
     private float turnDelay = .3f;
     private bool enemiesMoving;
     private List<Enemy> enemies;
+
+    public void LoadNextLevel()
+    {
+        //StopAllCoroutines();
+        enemies.Clear();
+        Invoke("LoadLevel", 1.0f);
+    }
+
+    private void LoadLevel()
+    {
+        Player.Instance.RelocateToStart();
+        Application.LoadLevel(Application.loadedLevel);
+    }
 }

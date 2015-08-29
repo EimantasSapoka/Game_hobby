@@ -28,7 +28,6 @@ namespace Assets.Scripts.Game
             get { return food; }
             private set
             {
-                print("changing food to " + value);
                 GameUI.Instance.UpdateFoodText(value);
                 food = value;
                 CheckIfGameOver();
@@ -87,9 +86,7 @@ namespace Assets.Scripts.Game
 
         public void IncreaseFood(int amount)
         {
-            print(Food+ " increasing food by " + amount);
             Food = Food + amount;
-            print("food now is " + Food);
             LaunchAction<int>(OnPlayerFoodChanged, amount);
         }
 
@@ -164,5 +161,10 @@ namespace Assets.Scripts.Game
 
         private Animator animator;
 
+        public void RelocateToStart()
+        {
+            StopAllCoroutines();
+            transform.position = new Vector2(1, 1);
+        }
     }
 }

@@ -21,17 +21,22 @@ namespace Assets.Scripts.Game
         public int BoardHeight { get { return BoardWidth/2; } }
 
         private int boardLevel;
+        private Transform levelHolder;
 
         public void GenerateLevel(int level)
         {
             boardLevel = level;
+            levelHolder = new GameObject("Level").transform;
             CreateBoard(BoardWidth, BoardHeight);
             InitializeList();
             LayoutObjectAtRandom(Pickups, level, (int)Math.Ceiling(level*1.5f));
             LayoutObjectAtRandom(Walls, BoardWidth*BoardHeight/4, BoardWidth*BoardHeight/3);
             LayoutObjectAtRandom(Enemies, level - 1, level);
-            Instantiate(Exit, RandomExitPosition(), Quaternion.identity);
-
+            var exit = Instantiate(Exit, RandomExitPosition(), Quaternion.identity) as GameObject;
+            if (exit != null)
+            {
+                exit.transform.SetParent(levelHolder);
+            }
         }
 
         private Vector3 RandomExitPosition()
@@ -91,7 +96,12 @@ namespace Assets.Scripts.Game
             {
                 var randomPosition = RandomPosition();
                 var randomObject = tileArray[Random.Range(0, tileArray.Length)];
-                Instantiate(randomObject, randomPosition, Quaternion.identity);
+                var instance = Instantiate(randomObject, randomPosition, Quaternion.identity) as GameObject;
+                if (instance != null)
+                {
+                    instance.transform.SetParent(levelHolder);
+                }
+
             }
         }
 

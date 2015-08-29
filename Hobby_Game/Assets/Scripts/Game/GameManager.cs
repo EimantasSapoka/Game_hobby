@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         Player.Instance.OnPlayerDeath += GameOver;
+        Player.Instance.OnPlayerMoveFinished += () => PlayerTurn = false;
     }
 
 
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour
     protected IEnumerator MoveEnemies()
     {
         enemiesMoving = true;
+        yield return new WaitForSeconds(0.1f);
         foreach (var t in enemies)
         {
             t.MoveEnemy();
@@ -69,8 +71,8 @@ public class GameManager : MonoBehaviour
         }
         yield return new WaitForSeconds(turnDelay);
 
-        PlayerTurn = true;
         enemiesMoving = false;
+        PlayerTurn = true;
 
     }
 

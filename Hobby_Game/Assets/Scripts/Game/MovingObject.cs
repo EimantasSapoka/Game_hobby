@@ -29,6 +29,7 @@ public abstract class MovingObject : MonoBehaviour {
 		hit = Physics2D.Linecast (start, end, BlockingLayer);
 		boxCollider.enabled = true;
 
+
 		if (hit.transform == null) 
 		{
 			StartCoroutine (SmoothMovement (end));
@@ -41,6 +42,7 @@ public abstract class MovingObject : MonoBehaviour {
 	{
 		RaycastHit2D hit;
 		bool canMove = Move (xDir, yDir, out hit);
+	    print("Enemy can move!");
 
 		if (hit.transform == null)
 			return;
@@ -49,6 +51,7 @@ public abstract class MovingObject : MonoBehaviour {
 
 	    if (!canMove && hitComponent != null)
 	    {
+
 	        hitComponent.Interact(this);
 	    }
     }

@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
-    public class Player : MovingObject, IWallDamage, IInteractable{
+    public class Player : MovingObject, IWallDamage, IInteractable
+    {
 
         public static Player Instance;
         public int StartingFood = 100;
@@ -18,6 +19,7 @@ namespace Assets.Scripts.Game
         public event Action OnPlayerMoved;
         public event Action OnPlayerDeath;
         public event Action<int> OnPlayerFoodChanged;
+        public event Action OnPlayerMoveFinished;
 
 
         private int food;
@@ -76,8 +78,9 @@ namespace Assets.Scripts.Game
             {
                 LaunchAction(OnPlayerMoved);
             }
-            CheckIfGameOver ();
-            GameManager.Instance.PlayerTurn = false;
+
+             
+            LaunchAction(OnPlayerMoveFinished);
         }
         private void OnTriggerEnter2D (Collider2D other)
         {

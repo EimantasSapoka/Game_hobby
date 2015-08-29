@@ -6,18 +6,13 @@ namespace Assets.Scripts.Game
     public class Enemy : MovingObject, IInteractsWithPlayer {
 
         public int PlayerDamage;
-
-        public AudioClip EnemyAttackSound1;
-        public AudioClip EnemyAttackSound2;
-
-        private Animator animator;
-        private Transform target;
-        private bool skipMove;
+       
 
         protected override void Awake () {
             GameManager.Instance.AddEnemyToList (this);
             animator = GetComponent<Animator> ();
             target = GameObject.FindGameObjectWithTag("Player").transform;
+            audioSource = GetComponent<AudioSource>();
             base.Awake ();
         }
 
@@ -28,6 +23,7 @@ namespace Assets.Scripts.Game
                 skipMove = false;
                 return;
             }
+
             base.AttemptMove(xDir,yDir);
             skipMove = true;
         }
@@ -49,7 +45,12 @@ namespace Assets.Scripts.Game
         {
             player.DamagePlayer(PlayerDamage);
             animator.SetTrigger ("Hit");
-            //GameManager.MusicPlayer.RandomizeSfx(enemyAttackSound1, enemyAttackSound2);
+            audioSource.Play();
         }
+
+        private AudioSource audioSource;
+        private Animator animator;
+        private Transform target;
+        private bool skipMove;
     }
 }

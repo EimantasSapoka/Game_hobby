@@ -1,33 +1,57 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using Assets.Scripts.Game;
+using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+namespace Assets.Scripts.Menu
 {
-
-    public static SoundManager Instance;
-    private AudioSource audioSource;
-
-    public AudioClip PlayerDamaged;
-    public AudioClip PlayerMove;
-
-	// Use this for initialization
-	void Awake ()
-	{
-	    if (Instance == null)
-	    {
-	        Instance = this;
-        }
-        else if (Instance != this)
-        {
-            DestroyObject(this.gameObject);
-        }
-	    DontDestroyOnLoad(this.gameObject);
-
-	    audioSource = GetComponent<AudioSource>();
-	}
-
-    void OnEnable()
+    public class SoundManager : MonoBehaviour
     {
-        Player.OnPlayerDamaged += () => audioSource.PlayOneShot(PlayerDamaged);
-        Player.OnPlayerMoved += () => audioSource.PlayOneShot(PlayerMove);
-    }  
+
+        public static SoundManager Instance;
+        private AudioSource audioSource;
+
+        public AudioClip[] SoundTracks;
+
+      
+
+        // Use this for initialization
+        void Awake ()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else if (Instance != this)
+            {
+                DestroyObject(this.gameObject);
+            }
+            DontDestroyOnLoad(this.gameObject);
+
+            audioSource = GetComponent<AudioSource>();
+        }
+
+        private void OnLevelWasLoaded()
+        {
+            var trackToPlay = SoundTracks[Random.Range(0, SoundTracks.Length)];
+            audioSource.clip = trackToPlay;
+            if (audioSource.isActiveAndEnabled)
+            {
+                audioSource.Play();
+                StartCoroutine(MusicFadeIn(audioSource.volume));
+            }
+        }
+
+        private IEnumerator MusicFadeIn(float originalVolume)
+        {
+            audioSource.volume = 0;
+            for (int i = 0; i < 5; i++)
+            {
+                audioSource.volume += originalVolume*0.2f;
+                yield return new WaitForSeconds(.2f);
+
+            }  
+        }
+
+        
+    }
 }

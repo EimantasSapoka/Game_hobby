@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Game;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Player.OnPlayerDeath += () => GameManager.Instance.GameOver();
+        Player.Instance.OnPlayerDeath += GameOver;
     }
 
 

@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class DontDestroyOnLoad : MonoBehaviour {
+namespace Assets.Scripts.Menu
+{
+    public class DontDestroyOnLoad : MonoBehaviour {
 
-	// Use this for initialization
-	void Awake ()
-	{
-	    DontDestroyOnLoad(this.gameObject);
-	}
+        // Use this for initialization
+        void Awake ()
+        {
+            DontDestroyOnLoad(this.gameObject);
+        }
 
+    }
 }

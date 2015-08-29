@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public interface IInteractable
+namespace Assets.Scripts.Game.Interfaces
 {
-    void Interact(Component sender);
+    public interface IInteractable
+    {
+        void Interact(Component sender);
+    }
 }

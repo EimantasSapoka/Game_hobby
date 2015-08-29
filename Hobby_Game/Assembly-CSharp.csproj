@@ -57,6 +57,7 @@
      <Compile Include="Assets\Scripts\Game\MovingObject.cs" />
      <Compile Include="Assets\Scripts\Game\PickUp.cs" />
      <Compile Include="Assets\Scripts\Game\Player.cs" />
+     <Compile Include="Assets\Scripts\Game\PlayerSoundManager.cs" />
      <Compile Include="Assets\Scripts\Game\SingletonLoader.cs" />
      <Compile Include="Assets\Scripts\Game\Wall.cs" />
      <Compile Include="Assets\Scripts\Menu\DontDestroyOnLoad.cs" />

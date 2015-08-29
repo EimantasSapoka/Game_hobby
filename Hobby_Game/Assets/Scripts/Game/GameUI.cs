@@ -1,56 +1,58 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
-public class GameUI : MonoBehaviour
+namespace Assets.Scripts.Game
 {
-
-    public GameObject GameOverPanel;
-    public static GameUI Instance;
-    public Text FoodText;
-
-
-	// Use this for initialization
-	void Awake () 
+    public class GameUI : MonoBehaviour
     {
-	    if (Instance == null)
-	    {
-            Instance = this;
-        }
-        else if (Instance != this)
+
+        public GameObject GameOverPanel;
+        public static GameUI Instance;
+        public Text FoodText;
+
+
+        // Use this for initialization
+        void Awake () 
         {
-            DestroyObject(gameObject);
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else if (Instance != this)
+            {
+                DestroyObject(gameObject);
+            }
+
+            DontDestroyOnLoad(gameObject);
         }
 
-	    DontDestroyOnLoad(gameObject);
-    }
-
-    private void OnEnable()
-    {
-        Player.OnPlayerFoodChanged += PlayerFoodChange;
-    }
-
-    private void OnLevelWasLoaded(int level)
-    {
-        if (level == 0)
+        private void OnEnable()
         {
-            DestroyObject(gameObject);
+            Player.Instance.OnPlayerFoodChanged += PlayerFoodChange;
         }
-    }
 
-    public void ShowGameOverPanel()
-    {
-        GameOverPanel.SetActive(true);
-    }
+        private void OnLevelWasLoaded(int level)
+        {
+            if (level == 0)
+            {
+                DestroyObject(gameObject);
+            }
+        }
 
-    public void UpdateFoodText(int food)
-    {
-        FoodText.text = "Food: " + food;    
-    }
+        public void ShowGameOverPanel()
+        {
+            GameOverPanel.SetActive(true);
+        }
 
-    public void PlayerFoodChange(int amount)
-    {
-        var plus = amount > 0 ? "+" : "";
-        FoodText.text = string.Format("{0} {1}{2}", FoodText.text, plus, amount);
+        public void UpdateFoodText(int food)
+        {
+            FoodText.text = "Food: " + food;    
+        }
+
+        public void PlayerFoodChange(int amount)
+        {
+            var plus = amount > 0 ? "+" : "";
+            FoodText.text = string.Format("{0} {1}{2}", FoodText.text, plus, amount);
+        }
     }
 }

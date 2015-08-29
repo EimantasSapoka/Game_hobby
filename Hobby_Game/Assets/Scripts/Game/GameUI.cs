@@ -25,6 +25,11 @@ public class GameUI : MonoBehaviour
 	    DontDestroyOnLoad(gameObject);
     }
 
+    private void OnEnable()
+    {
+        Player.OnPlayerFoodChanged += PlayerFoodChange;
+    }
+
     private void OnLevelWasLoaded(int level)
     {
         if (level == 0)
@@ -43,9 +48,9 @@ public class GameUI : MonoBehaviour
         FoodText.text = "Food: " + food;    
     }
 
-    public void UpdateFoodText(int food, int amount)
+    public void PlayerFoodChange(int amount)
     {
         var plus = amount > 0 ? "+" : "";
-        FoodText.text = string.Format("Food: {0} {1}{2}", food, plus, amount);
+        FoodText.text = string.Format("{0} {1}{2}", FoodText.text, plus, amount);
     }
 }

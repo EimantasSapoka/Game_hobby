@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Assets.Scripts.Game.Interfaces;
-using UnityEngine.UI;
 
 public class Player : MovingObject, IWallDamage, IInteractable{
 
@@ -12,7 +12,7 @@ public class Player : MovingObject, IWallDamage, IInteractable{
 	public AudioClip DrinkSound2;
 	public AudioClip GameOverSound;
 
-    public Player Instance;
+    private Player instance;
     public int StartingFood = 100;
 	public int Damage = 1;
 	public int PointsPerFood = 10;
@@ -20,25 +20,33 @@ public class Player : MovingObject, IWallDamage, IInteractable{
 
 	public float RestartLevelDelay = 1f;
 
+    public static event Action OnPlayerDamaged;
+    public static event Action OnPlayerMoved;
+    public static event Action OnPlayerDeath;
+    public static event Action<int> OnPlayerFoodChanged;
+
+
     private int food;
     public int Food
     {
         get { return food; }
         private set
         {
-            GameUI.Instance.UpdateFoodText(Food);
+            GameUI.Instance.UpdateFoodText(value);
             food = value;
             CheckIfGameOver();
         } 
     }
 
+    
+
     // Use this for initialization
 	protected override void Start () {
-	    if (Instance == null)
+	    if (instance == null)
 	    {
-            Instance = this;
+            instance = this;
 	    }
-        else if (Instance != this)
+        else if (instance != this)
         {
             DestroyObject(gameObject);
         }
@@ -67,11 +75,12 @@ public class Player : MovingObject, IWallDamage, IInteractable{
 
 	protected override void AttemptMove(int xDir, int yDir)
 	{
-	    Food --;
+	    Food--;
 		base.AttemptMove (xDir, yDir);
 		RaycastHit2D hit;
-		if (Move (xDir, yDir, out hit)) {
-			//GameManager.MusicPlayer.RandomizeSfx(moveSound1, moveSound2);
+		if (Move (xDir, yDir, out hit))
+		{
+		    LaunchAction(OnPlayerMoved);
 		}
 		CheckIfGameOver ();
 		GameManager.Instance.PlayerTurn = false;
@@ -84,29 +93,46 @@ public class Player : MovingObject, IWallDamage, IInteractable{
     public void IncreaseFood(int amount)
     {
         Food += amount;
-        GameUI.Instance.UpdateFoodText(Food, amount);
+        LaunchAction<int>(OnPlayerFoodChanged, amount);
     }
 
     public void ReduceFood(int amount)
     {
         Food -= amount;
-        GameUI.Instance.UpdateFoodText(Food, amount*-1);
+        LaunchAction<int>(OnPlayerFoodChanged, amount*-1);
     }
 
     public void DamagePlayer(int damage)
     {
         animator.SetTrigger("Player_Hit");
         ReduceFood(damage);
+        LaunchAction(OnPlayerDamaged);
     }
 
 
 	private void CheckIfGameOver()
 	{
-		if (Food <= 0) {
-			//GameManager.MusicPlayer.PlaySinge(gameOverSound);
-			GameManager.Instance.GameOver ();
+		if (Food <= 0)
+		{
+		    LaunchAction(OnPlayerDeath);
 		}
 	}
+
+    private void LaunchAction(Action onAction)
+    {
+        if (onAction != null)
+        {
+            onAction();
+        }
+    }
+
+    private void LaunchAction<T>(Action<T> onAction, T value)
+    {
+        if (onAction != null)
+        {
+            onAction(value);
+        }
+    }
 
     private void OnLevelWasLoaded(int level)
     {

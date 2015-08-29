@@ -27,8 +27,13 @@ public class GameManager : MonoBehaviour
 
 	    DontDestroyOnLoad(gameObject);
 	    BoardManager = GetComponent<BoardManager>();
-	    OnLevelWasLoaded(1);
 	}
+
+    private void OnEnable()
+    {
+        Player.OnPlayerDeath += () => GameManager.Instance.GameOver();
+    }
+
 
     private void OnLevelWasLoaded(int levelLoaded)
     {
@@ -56,18 +61,12 @@ public class GameManager : MonoBehaviour
     protected IEnumerator MoveEnemies()
     {
         enemiesMoving = true;
+        foreach (var t in enemies)
+        {
+            t.MoveEnemy();
+            yield return null;
+        }
         yield return new WaitForSeconds(turnDelay);
-
-        if (enemies.Count == 0)
-        {
-            yield return new WaitForSeconds(turnDelay);
-        }
-
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            enemies[i].MoveEnemy();
-            yield return new WaitForSeconds(enemies[i].MoveTime);
-        }
 
         PlayerTurn = true;
         enemiesMoving = false;
@@ -92,7 +91,7 @@ public class GameManager : MonoBehaviour
         DestroyObject(gameObject);
     }
 
-    private float turnDelay = .1f;
+    private float turnDelay = .3f;
     private bool enemiesMoving;
     private List<Enemy> enemies;
 }

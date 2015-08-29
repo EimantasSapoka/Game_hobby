@@ -22,6 +22,7 @@ public class BoardManager : MonoBehaviour
 
     public void GenerateLevel(int level)
     {
+        Debug.Log("creating board");
         boardLevel = level;
         CreateBoard(BoardWidth, BoardHeight);
         InitializeList();

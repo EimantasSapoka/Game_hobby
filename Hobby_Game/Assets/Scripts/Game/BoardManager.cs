@@ -29,6 +29,7 @@ namespace Assets.Scripts.Game
             levelHolder = new GameObject("Level").transform;
             CreateBoard(BoardWidth, BoardHeight);
             InitializeList();
+
             LayoutObjectAtRandom(Pickups, level*2, level*3);
             LayoutObjectAtRandom(Walls, BoardWidth*BoardHeight/3, BoardWidth*BoardHeight/3);
             LayoutObjectAtRandom(Enemies, level - 1, level+1);

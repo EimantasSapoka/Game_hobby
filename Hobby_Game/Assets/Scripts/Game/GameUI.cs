@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Game
@@ -7,6 +8,8 @@ namespace Assets.Scripts.Game
     {
 
         public GameObject GameOverPanel;
+        public GameObject LevelTransitionPanel;
+        public Text LevelTransitionText;
         public static GameUI Instance;
         public Text FoodText;
 
@@ -20,11 +23,22 @@ namespace Assets.Scripts.Game
             }
             else if (Instance != this)
             {
-                DestroyObject(gameObject);
+                Destroy(gameObject);
             }
 
             DontDestroyOnLoad(gameObject);
         }
+
+        private void Update()
+        {
+
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                Application.LoadLevel(Application.loadedLevel);
+            }
+
+        }
+
 
         private void OnEnable()
         {
@@ -36,7 +50,7 @@ namespace Assets.Scripts.Game
         {
             if (level == 0)
             {
-                DestroyObject(gameObject);
+                Destroy(gameObject);
             }
         }
 
@@ -54,6 +68,20 @@ namespace Assets.Scripts.Game
         {
             var plus = amount > 0 ? "+" : "";
             FoodText.text = string.Format("{0} {1}{2}", FoodText.text, plus, amount);
+        }
+
+        public void ShowLevelTransition(float time, int level)
+        {
+            StartCoroutine(LevelTransitionCoroutine(time, level));
+            
+        }
+
+        private IEnumerator LevelTransitionCoroutine(float time, int level)
+        {
+            LevelTransitionPanel.SetActive(true);
+            LevelTransitionText.text = "Day " + level;
+            yield return new WaitForSeconds(time);
+            LevelTransitionPanel.SetActive(false);
         }
     }
 }

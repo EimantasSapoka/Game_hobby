@@ -10,14 +10,14 @@ namespace Assets.Scripts.Menu
         // Use this for initialization
         void Start()
         {
-            UIfadeAnimator = FadePanel.GetComponent<Animator>();
-            LoadFirstLevel();
+            uIfadeAnimator = FadePanel.GetComponent<Animator>();
         }
 
         public void StartButtonOnClick()
         {
-            Invoke("LoadFirstLevel", 1.0f);
-            UIfadeAnimator.SetTrigger("Fade");
+            Invoke("LoadFirstLevel", 1.5f);
+            uIfadeAnimator.SetTrigger("Fade");
+            SoundManager.Instance.FadeOutMusic();
         }
 
         private void LoadFirstLevel()
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Menu
             Application.LoadLevel(START_SCENE);
         }
 
-        private Animator UIfadeAnimator;
+        private Animator uIfadeAnimator;
         private readonly int START_SCENE = 1;
     }
 }

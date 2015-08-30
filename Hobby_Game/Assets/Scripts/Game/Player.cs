@@ -161,10 +161,6 @@ namespace Assets.Scripts.Game
 
         private Animator animator;
 
-        public void RelocateToStart()
-        {
-            StopAllCoroutines();
-            transform.position = new Vector2(1, 1);
-        }
+        
     }
 }

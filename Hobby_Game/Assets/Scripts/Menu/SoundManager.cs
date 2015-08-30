@@ -14,6 +14,7 @@ namespace Assets.Scripts.Menu
         public bool RandomizeSoundPitch = true;
 
         public AudioClip[] SoundTracks;
+        public AudioClip MainMenuMusic;
 
       
 
@@ -26,34 +27,62 @@ namespace Assets.Scripts.Menu
             }
             else if (Instance != this)
             {
-                DestroyObject(gameObject);
+                Destroy(gameObject);
             }
             DontDestroyOnLoad(gameObject);
-
             musicPlayer = GetComponents<AudioSource>()[0];
             soundPlayer = GetComponents<AudioSource>()[1];
         }
 
-        private void OnLevelWasLoaded()
+        private void OnLevelWasLoaded(int level)
         {
-            var trackToPlay = SoundTracks[Random.Range(0, SoundTracks.Length)];
-            musicPlayer.clip = trackToPlay;
+
+            if (level == 0)
+            {
+                musicPlayer.clip = MainMenuMusic;
+            }
+            else
+            {
+                var trackToPlay = SoundTracks[Random.Range(0, SoundTracks.Length)];
+                musicPlayer.clip = trackToPlay;
+
+            }
             if (musicPlayer.isActiveAndEnabled)
             {
-                musicPlayer.Play();
+                musicPlayer.Play();                
                 StartCoroutine(MusicFadeIn(musicPlayer.volume));
             }
+            
         }
 
         private IEnumerator MusicFadeIn(float originalVolume)
         {
+
             musicPlayer.volume = 0;
             for (int i = 0; i < 5; i++)
             {
                 musicPlayer.volume += originalVolume*0.2f;
                 yield return new WaitForSeconds(.2f);
-
             }  
+        }
+
+        public void FadeOutMusic()
+        {
+            if (musicPlayer.isActiveAndEnabled)
+            {
+                StartCoroutine(MusicFadeOut(musicPlayer.volume));
+            }
+        }
+
+        private IEnumerator MusicFadeOut(float originalVolume)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                musicPlayer.volume -= originalVolume/5;
+                yield return new WaitForSeconds(.2f);
+            }
+            musicPlayer.Stop();
+            musicPlayer.volume = originalVolume;
         }
 
         public  void PlayAudioClip(AudioClip audio)

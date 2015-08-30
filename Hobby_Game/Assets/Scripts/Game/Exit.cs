@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
-using System.Collections;
-using Assets.Scripts.Game;
 
-public class Exit : MonoBehaviour {
+namespace Assets.Scripts.Game
+{
+    public class Exit : MonoBehaviour {
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.GetComponent<Player>() != null)
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            GameManager.Instance.LoadNextLevel();
-        }
+            if (other.GetComponent<Player>() != null)
+            {
+                GameManager.Instance.LoadNextLevel();
+            }
 
    
+        }
     }
 }

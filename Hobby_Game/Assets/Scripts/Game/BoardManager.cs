@@ -29,14 +29,16 @@ namespace Assets.Scripts.Game
             levelHolder = new GameObject("Level").transform;
             CreateBoard(BoardWidth, BoardHeight);
             InitializeList();
-            LayoutObjectAtRandom(Pickups, level, (int)Math.Ceiling(level*1.5f));
-            LayoutObjectAtRandom(Walls, BoardWidth*BoardHeight/4, BoardWidth*BoardHeight/3);
-            LayoutObjectAtRandom(Enemies, level - 1, level);
+            LayoutObjectAtRandom(Pickups, level, (int)Math.Ceiling(level*2f));
+            LayoutObjectAtRandom(Walls, BoardWidth*BoardHeight/3, BoardWidth*BoardHeight/3);
+            LayoutObjectAtRandom(Enemies, level - 1, level+1);
             var exit = Instantiate(Exit, RandomExitPosition(), Quaternion.identity) as GameObject;
             if (exit != null)
             {
                 exit.transform.SetParent(levelHolder);
             }
+            Instantiate(Exit, new Vector3(1, 2, 0), Quaternion.identity);
+
         }
 
         private Vector3 RandomExitPosition()

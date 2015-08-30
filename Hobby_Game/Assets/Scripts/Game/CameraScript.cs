@@ -15,10 +15,10 @@ namespace Assets.Scripts.Game
         }
 	
         // Update is called once per frame
-        void LateUpdate ()
+        void Update ()
         {
-            float boardHeight = GameManager.Instance.BoardManager.BoardHeight;
-            float boardWidth = GameManager.Instance.BoardManager.BoardWidth;
+            float boardHeight = GameManager.BoardManager.BoardHeight;
+            float boardWidth = GameManager.BoardManager.BoardWidth;
                 
             var vertExtent = Camera.main.orthographicSize;
             var horzExtent = vertExtent *  Screen.width / Screen.height;

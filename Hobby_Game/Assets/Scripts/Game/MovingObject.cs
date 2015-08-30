@@ -38,21 +38,24 @@ public abstract class MovingObject : MonoBehaviour {
 		return false;
 	}
 
-	protected virtual void AttemptMove(int xDir, int yDir)
+	protected virtual bool AttemptMove(int xDir, int yDir)
 	{
 		RaycastHit2D hit;
 		bool canMove = Move (xDir, yDir, out hit);
 
-		if (hit.transform == null)
-			return;
+	    if (hit.transform == null)
+	    {
+	        return true;
+	    }
 
 		IInteractable hitComponent = hit.transform.GetComponent<IInteractable> ();
 
 	    if (!canMove && hitComponent != null)
 	    {
-
 	        hitComponent.Interact(this);
+            return false;
 	    }
+        return true;
     }
 
 	protected IEnumerator SmoothMovement(Vector3 end)

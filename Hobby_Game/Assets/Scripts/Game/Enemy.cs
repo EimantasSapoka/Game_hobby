@@ -3,54 +3,38 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
-    public class Enemy : MovingObject, IInteractsWithPlayer {
+    public abstract class Enemy : MovingObject, IInteractsWithPlayer {
 
         public int PlayerDamage;
-       
 
-        protected override void Awake () {
-            GameManager.Instance.AddEnemyToList (this);
-            animator = GetComponent<Animator> ();
-            target = GameObject.FindGameObjectWithTag("Player").transform;
+        protected override void Awake()
+        {
+            animator = GetComponent<Animator>();
+            Target = GameObject.FindGameObjectWithTag("Player").transform;
             audioSource = GetComponent<AudioSource>();
-            base.Awake ();
+            base.Awake();
         }
 
-        protected override void AttemptMove(int xDir, int yDir)
+        protected void Start()
         {
-            if (skipMove)
-            {
-                skipMove = false;
-                return;
-            }
-
-            base.AttemptMove(xDir,yDir);
-            skipMove = true;
+            FindObjectOfType<GameManager>().AddEnemyToList(this);
         }
 
-        public void MoveEnemy()
-        {
-            int xDir = 0;
-            int yDir = 0;
-
-            if (Mathf.Abs (target.position.x - transform.position.x) < float.Epsilon)
-                yDir = target.position.y > transform.position.y ? 1 : -1;
-            else 
-                xDir = target.position.x > transform.position.x ? 1 : -1;
-            AttemptMove (xDir, yDir);
-
-        }
-
-        void IInteractsWithPlayer.InteractWithPlayer(Player player)
+        public virtual void InteractWithPlayer(Player player)
         {
             player.DamagePlayer(PlayerDamage);
-            animator.SetTrigger ("Hit");
+            TriggerHitAnimation();
+        }
+
+        protected void TriggerHitAnimation()
+        {
+            animator.SetTrigger("Hit");
             audioSource.Play();
         }
 
+        public abstract void MoveEnemy();
         private AudioSource audioSource;
         private Animator animator;
-        private Transform target;
-        private bool skipMove;
+        protected Transform Target;
     }
 }

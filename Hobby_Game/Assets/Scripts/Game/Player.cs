@@ -59,6 +59,11 @@ namespace Assets.Scripts.Game
             if (!GameManager.Instance.PlayerTurn)
                 return;
 
+            if (Input.GetKey(KeyCode.Space))
+            {
+                LaunchAction(OnPlayerMoveFinished);
+                return;
+            }
             var horizontal = (int)Input.GetAxisRaw ("Horizontal");
             var vertical = (int)Input.GetAxisRaw ("Vertical");
 
@@ -69,18 +74,18 @@ namespace Assets.Scripts.Game
                 AttemptMove (horizontal, vertical);
         }
 
-        protected override void AttemptMove(int xDir, int yDir)
+        protected override bool AttemptMove(int xDir, int yDir)
         {
             Food = Food - 1;
             base.AttemptMove (xDir, yDir);
             RaycastHit2D hit;
-            if (Move (xDir, yDir, out hit))
+            var moved = Move(xDir, yDir, out hit);
+            if (moved)
             {
                 LaunchAction(OnPlayerMoved);
             }
-
-             
             LaunchAction(OnPlayerMoveFinished);
+            return moved;
         }
       
 

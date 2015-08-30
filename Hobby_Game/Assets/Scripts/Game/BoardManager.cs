@@ -17,7 +17,7 @@ namespace Assets.Scripts.Game
         public GameObject Exit;
         public int StartingLevelSize = 20;
 
-        public int BoardWidth { get{   return StartingLevelSize + boardLevel*2; }}
+        public int BoardWidth { get{   return StartingLevelSize + boardLevel + boardLevel/5 * 6; }}
         public int BoardHeight { get { return BoardWidth/2; } }
 
         private int boardLevel;
@@ -29,7 +29,7 @@ namespace Assets.Scripts.Game
             levelHolder = new GameObject("Level").transform;
             CreateBoard(BoardWidth, BoardHeight);
             InitializeList();
-            LayoutObjectAtRandom(Pickups, level, (int)Math.Ceiling(level*2f));
+            LayoutObjectAtRandom(Pickups, level*2, level*3);
             LayoutObjectAtRandom(Walls, BoardWidth*BoardHeight/3, BoardWidth*BoardHeight/3);
             LayoutObjectAtRandom(Enemies, level - 1, level+1);
             var exit = Instantiate(Exit, RandomExitPosition(), Quaternion.identity) as GameObject;
@@ -37,8 +37,6 @@ namespace Assets.Scripts.Game
             {
                 exit.transform.SetParent(levelHolder);
             }
-            Instantiate(Exit, new Vector3(1, 2, 0), Quaternion.identity);
-
         }
 
         private Vector3 RandomExitPosition()

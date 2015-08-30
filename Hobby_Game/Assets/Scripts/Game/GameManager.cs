@@ -26,13 +26,14 @@ namespace Assets.Scripts.Game
             else if (Instance != this)
             {
                 Destroy(gameObject);
+                enabled = false;
+                gameObject.SetActive(false);
                 return;
             }
             
             enemies = new List<Enemy>();
-            BoardManager = GameObject.FindObjectOfType<BoardManager>();
+            BoardManager = FindObjectOfType<BoardManager>();
             DontDestroyOnLoad(gameObject);
-
         }
 
         private void OnEnable()
@@ -51,7 +52,6 @@ namespace Assets.Scripts.Game
             else
             {
                 Level++;
-                print("showing level transition");
                 GameUI.Instance.ShowLevelTransition(1.0f, Level);
                 enemies.Clear();
                 BoardManager.GenerateLevel(Level);
@@ -63,6 +63,12 @@ namespace Assets.Scripts.Game
 	
         // Update is called once per frame
         void Update () {
+            // ************************ DEBUG CODE TO BE ABLE TO LAUNCH GAME SCENE DIRECTLY *********************
+            if (Level == 0)
+            {
+                OnLevelWasLoaded(1);
+            }
+            // *******************************************************************
             if (PlayerTurn || enemiesMoving || GamePaused)
             {
                 return;

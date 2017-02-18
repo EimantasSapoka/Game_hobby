@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Menu
 {
@@ -22,7 +23,7 @@ namespace Assets.Scripts.Menu
 
         private void LoadFirstLevel()
         {
-            Application.LoadLevel(START_SCENE);
+            SceneManager.LoadScene("Game");
         }
 
         private Animator uIfadeAnimator;

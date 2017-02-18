@@ -32,11 +32,17 @@ namespace Assets.Scripts.Game
         private void Update()
         {
 
-            if (Input.GetKey(KeyCode.Escape))
-            {
-                Application.LoadLevel(Application.loadedLevel);
-            }
 
+          /*  float boardHeight = GameManager.BoardManager.BoardHeight;
+            float boardWidth = GameManager.BoardManager.BoardWidth;
+
+            var vertExtent = Camera.main.orthographicSize;
+            var horzExtent = vertExtent * Screen.width / Screen.height;
+
+            var v3 = transform.position;
+            v3.x = Mathf.Clamp(player.position.x, horzExtent, boardWidth - horzExtent - Offset);
+            v3.y = Mathf.Clamp(player.position.y, vertExtent, boardHeight - vertExtent - Offset);
+            transform.position = v3;*/
         }
 
 
@@ -44,14 +50,6 @@ namespace Assets.Scripts.Game
         {
             UpdateFoodText(Player.Instance.Food);
             Player.Instance.OnPlayerFoodChanged += PlayerFoodChange;
-        }
-
-        private void OnLevelWasLoaded(int level)
-        {
-            if (level == 0)
-            {
-                Destroy(gameObject);
-            }
         }
 
         public void ShowGameOverPanel()
@@ -78,6 +76,7 @@ namespace Assets.Scripts.Game
 
         private IEnumerator LevelTransitionCoroutine(float time, int level)
         {
+
             LevelTransitionPanel.SetActive(true);
             LevelTransitionText.text = "Day " + level;
             yield return new WaitForSeconds(time);

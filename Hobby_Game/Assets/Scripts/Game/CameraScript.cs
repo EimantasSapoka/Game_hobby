@@ -6,7 +6,6 @@ namespace Assets.Scripts.Game
     {
 
         private Transform player;
-        public float Offset = 1f;
 
 
         // Use this for initialization
@@ -21,11 +20,23 @@ namespace Assets.Scripts.Game
             float boardWidth = GameManager.BoardManager.BoardWidth;
                 
             var vertExtent = Camera.main.orthographicSize;
-            var horzExtent = vertExtent *  Screen.width / Screen.height;
-
+            
+            if (vertExtent > boardHeight/2)
+            {
+                Camera.main.orthographicSize = boardHeight;
+                vertExtent = Camera.main.orthographicSize;
+            }
+            
+            var horzExtent = (vertExtent *  Screen.width) / Screen.height;
+            if (horzExtent > boardWidth/2)
+            {
+                Camera.main.orthographicSize = (boardWidth/2 * Screen.height) / Screen.width;
+                vertExtent = Camera.main.orthographicSize;
+                horzExtent = (vertExtent * Screen.width) / Screen.height;
+            }
             var v3 = transform.position;
-            v3.x = Mathf.Clamp(player.position.x, horzExtent, boardWidth-horzExtent-Offset);
-            v3.y = Mathf.Clamp(player.position.y, vertExtent, boardHeight-vertExtent-Offset);
+            v3.x = Mathf.Clamp(player.position.x, horzExtent, boardWidth-horzExtent);
+            v3.y = Mathf.Clamp(player.position.y, vertExtent, boardHeight-vertExtent);
             transform.position = v3;
         }
     }

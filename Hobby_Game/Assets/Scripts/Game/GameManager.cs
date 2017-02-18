@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Menu;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Game
 {
@@ -34,6 +37,7 @@ namespace Assets.Scripts.Game
             enemies = new List<Enemy>();
             BoardManager = FindObjectOfType<BoardManager>();
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         private void OnEnable()
@@ -43,38 +47,31 @@ namespace Assets.Scripts.Game
         }
 
 
-        private void OnLevelWasLoaded(int levelLoaded)
+        private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
-            if (levelLoaded == 0)
+            if (scene.name == "Menu")
             {
-                Destroy(gameObject);
+                Destroy(this);
+                return;
             }
-            else
-            {
-                Level++;
-                GameUI.Instance.ShowLevelTransition(1.0f, Level);
-                enemies.Clear();
-                BoardManager.GenerateLevel(Level);
-                PlayerTurn = true;
-                GamePaused = false;
-                Player.Instance.enabled = true;
-            }
+            Level++;
+            GameUI.Instance.ShowLevelTransition(1.0f, Level);
+            enemies.Clear();
+            BoardManager.GenerateLevel(Level);
+            PlayerTurn = true;
+            GamePaused = false;
+            Player.Instance.enabled = true;
+            
         }
 	
         // Update is called once per frame
         void Update () {
-            // ************************ DEBUG CODE TO BE ABLE TO LAUNCH GAME SCENE DIRECTLY *********************
-            if (Level == 0)
-            {
-                OnLevelWasLoaded(1);
-            }
-            // *******************************************************************
             if (PlayerTurn || enemiesMoving || GamePaused)
             {
                 return;
             }
+            
             StartCoroutine(MoveEnemies());
- 
         }
 
         protected IEnumerator MoveEnemies()
@@ -106,11 +103,10 @@ namespace Assets.Scripts.Game
 
         private void LoadMenu()
         {
-            SoundManager.Instance.FadeOutMusic();
-            Application.LoadLevel(0);
+            SceneManager.LoadScene("Menu");
         }
 
-        private float turnDelay = .2f;
+        private float turnDelay = .1f;
         private bool enemiesMoving;
         private List<Enemy> enemies;
 
@@ -119,14 +115,7 @@ namespace Assets.Scripts.Game
             GamePaused = true;
             Player.Instance.enabled = false;
             Invoke("LoadLevel", 1.0f);
-
         }
-
-        public void LoadLevel()
-        {
-            Application.LoadLevel(Application.loadedLevel);
-        }
-
 
     }
 }

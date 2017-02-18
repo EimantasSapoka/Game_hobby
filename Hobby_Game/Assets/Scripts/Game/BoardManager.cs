@@ -18,7 +18,7 @@ namespace Assets.Scripts.Game
         public int StartingLevelSize = 20;
 
         public int BoardWidth { get{   return StartingLevelSize + boardLevel + boardLevel/5 * 6; }}
-        public int BoardHeight { get { return BoardWidth/2; } }
+        public int BoardHeight { get { return BoardWidth; } }
 
         private int boardLevel;
         private Transform levelHolder;
@@ -30,9 +30,9 @@ namespace Assets.Scripts.Game
             CreateBoard(BoardWidth, BoardHeight);
             InitializeList();
 
-            LayoutObjectAtRandom(Pickups, level*2, level*3);
+            LayoutObjectAtRandom(Pickups, level*4, level*5);
             LayoutObjectAtRandom(Walls, BoardWidth*BoardHeight/3, BoardWidth*BoardHeight/3);
-            LayoutObjectAtRandom(Enemies, level - 1, level+1);
+            LayoutObjectAtRandom(Enemies, level +2, level);
             var exit = Instantiate(Exit, RandomExitPosition(), Quaternion.identity) as GameObject;
             if (exit != null)
             {
@@ -57,9 +57,8 @@ namespace Assets.Scripts.Game
                     GameObject toInstantiate = FloorTiles[Random.Range(0, FloorTiles.Length)];
                     if (x == 0 || x == columns-1 || y == 0 || y == rows-1)
                         toInstantiate = OuterWallTiles[Random.Range(0, OuterWallTiles.Length)];
-                    GameObject instance = Instantiate(toInstantiate, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
-
-                    if (instance != null) instance.transform.SetParent(boardHolder);
+                    GameObject instance = Instantiate(toInstantiate, new Vector3(x + 0.5f, y+0.5f, 0f), Quaternion.identity);
+                    instance.transform.SetParent(boardHolder);
                 }
             }
 
@@ -74,7 +73,7 @@ namespace Assets.Scripts.Game
             {
                 for (int y = 2; y < BoardHeight - 1; y++)
                 {
-                    gridPositions.Add(new Vector3(x, y, 0f));
+                    gridPositions.Add(new Vector3(x+0.5f, y+0.5f, 0f));
                 }
             }
         }
